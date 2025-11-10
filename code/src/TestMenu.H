@@ -30,7 +30,7 @@ enum GetEmployeeDetails
 
 enum DoSomethingElse
 {
-    ADD_N_NUMBER_OF_LEAVES_TO_ALL_FULLTIME_EMPLOYEES,
+    ADD_N_NUMBER_OF_LEAVES_TO_ALL_FULLTIME_EMPLOYEES = 1,
     CONVERT_INTERN_TO_FULL_TIME_EMPLOYEE,
     SEARCH_EMPLOYEE_DETAILS_BYID,
     SEARCH_EMPLOYEE_DETAILS_BYNAME,
@@ -83,7 +83,7 @@ void Menu::DisplayMainMenu2Options()
     std::cout <<" |       2.Remove an Employee       | "<< std::endl;
     std::cout <<" |       3.Get Employee Details     | "<< std::endl;
     std::cout <<" |       4.Do Something else        | "<< std:: endl;
-    std::cout <<" |      -1 to Exit                  | "<< std::endl;
+    std::cout <<" |      -1 to go back               | "<< std::endl;
     std::cout <<" -----------------------------------  "<< std::endl;
     std::cout <<"Enter Your Choice:";
 }
@@ -242,10 +242,8 @@ void Menu::GetEmployeeDetails()
     int sUserChoice;
     DisplayGetEmployeeDetailsMenu();
     std::cin >> sUserChoice;
-    do
+    while(sUserChoice != -1)
     {
-        DisplayGetEmployeeDetailsMenu();
-        std::cin >> sUserChoice;
         switch(sUserChoice)
         {
             case ALL_EMPLOYEE_SUMMARY:
@@ -296,7 +294,9 @@ void Menu::GetEmployeeDetails()
                 std::cout << "Invalid User Choice!Try Again!" << std::endl;
                 }
         }
-    }while(sUserChoice != -1);
+        DisplayGetEmployeeDetailsMenu();
+        std::cin >> sUserChoice;
+    }
     return;
 }
 

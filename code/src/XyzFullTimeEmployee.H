@@ -46,7 +46,7 @@ XyzFullTimeEmployee::XyzFullTimeEmployee(std::string NameParm,
                                                                        EmployeeStatusParm,
                                                                        DolParm),mLeavesAvailed(AvailedLeavesParm)
 {
-    std::cout << "Creating a Parameterized Constructor" << std::endl;
+    std::cout << "Creating a FullTimeEmployee Parameterized Constructor" << std::endl;
 }
 
 void XyzFullTimeEmployee::AddLeaves(int Nparm)

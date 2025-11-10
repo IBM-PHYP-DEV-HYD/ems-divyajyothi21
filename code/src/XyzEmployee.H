@@ -70,7 +70,7 @@ XyzEmployee::XyzEmployee(std::string NameParm,
                                         mEmployeeStatus(EmployeeStatusParm),
                                         mDateOfLeaving("NA")
 {
-    mEmployeeId = EmployeeUtils::generateEmployeeId(EmpTypeParm);
+    //mEmployeeId = EmployeeUtils::generateEmployeeId(EmpTypeParm);
     if (EmployeeStatusParm == RESIGNED)
     {
         this->mDateOfLeaving = "2025-12-1";

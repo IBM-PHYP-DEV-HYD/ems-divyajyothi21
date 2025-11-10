@@ -9,13 +9,16 @@
 #include "XyzContractorEmployee.H"
 #include "XyzInternEmloyee.H"
 #include "EmployeeUtils.H"
-#include "string"
-#include "iostream"
+#include <string>
+#include <iostream>
+#include <chrono>
+
+using namespace std::chrono;
+using namespace std::chrono_literals;
 
 class XyzEmployeeManager
 {
     private:
-        int employeeIdCounter = 0;
         Edll<XyzEmployee*> ActiveInactiveEmployeeList; 
         Edll<XyzEmployee*> ResignedEmployeeList;
         XyzEmployee* pCreateRandomEmployee();
@@ -109,8 +112,10 @@ XyzEmployee* XyzEmployeeManager::pCreateRandomEmployee()
 */
 XyzEmployee* XyzEmployeeManager::pCreateManualEmployee()
 {
-        std::string sName, sEmpId, sDOJ, sDOB, sGenderString, sDOL;
+        std::string sName, sEmpId, sGenderString;
         int sChoice;
+        std::string sDOJ,sDOB,sDOL;
+        XyzEmployee* sEmp = NULL;
 
         std::cout << "Enter Employee Name: ";
         std::cin.ignore();
@@ -122,8 +127,8 @@ XyzEmployee* XyzEmployeeManager::pCreateManualEmployee()
         std::cout << "Enter Date of Joining (YYYY-MM-DD): ";
         std::cin >> sDOJ;
         
-        std::cout << "Enter Date of Leaving (YYYY-MM-DD):";
-        std::cin >> sDOL;
+       // std::cout << "Enter Date of Leaving (YYYY-MM-DD): ";
+       // std::cin >> sDOL;
         
         // Get Gender
         std::cout << "Select Gender (0: Male, 1: Female, 2: Other): ";
@@ -139,13 +144,21 @@ XyzEmployee* XyzEmployeeManager::pCreateManualEmployee()
         std::cout << "Select EmployeeType(0:FULL_TIME, 1:CONTRACTOR, 2:INTERN):";
         std::cin >> sChoice;
         EmployeeType sType = static_cast<EmployeeType>(sChoice); 
-        XyzEmployee* sEmp = NULL;
-
+        sEmpId = EmployeeUtils::generateEmployeeId(sType);
         if (sType == FULL_TIME)
         {
             int sLeaves;
             std::cout << "Enter No of Leaves availed for fulltime employee (0-22):";
-            std::cin >> sLeaves; 
+            std::cin >> sLeaves;
+            if (sStatus == RESIGNED)
+            {
+                std::cout << "Enter Date of Leaving (YYYY-MM-DD):";
+                std::cin >> sDOL;
+            }
+            else
+            {
+                sDOL = "NA";
+            } 
             sEmp = new XyzFullTimeEmployee(sName, sEmpId, sType, sGenderString, sDOJ, sDOB, sStatus, sDOL, sLeaves);
         }
         else if (sType == CONTRACTOR)
@@ -153,6 +166,7 @@ XyzEmployee* XyzEmployeeManager::pCreateManualEmployee()
             std::cout << "Select External Agency (0: Avengers, 1: Justice League, 2: X-Men): ";
             std::cin >> sChoice;
             Agency sAgency = static_cast<Agency>(sChoice);
+            sDOL = sDOJ;
             sEmp = new XyzContractorEmployee(sName, sEmpId, sType, sGenderString, sDOJ, sDOB, sStatus, sDOL, sAgency);
         }
         else if (sType == INTERN)
@@ -164,6 +178,7 @@ XyzEmployee* XyzEmployeeManager::pCreateManualEmployee()
             std::cout << "Select Branch (0: CSE, 1: CSIT, 2: ECE): ";
             std::cin >> sChoice;
             Branch sBranch = static_cast<Branch>(sChoice);
+            sDOL = sDOJ; 
             sEmp = new XyzInternEmployee(sName, sEmpId, sType, sGenderString, sDOJ,sDOB,sStatus,sDOL, sCollege, sBranch);
         }
         return sEmp;
@@ -197,7 +212,7 @@ XyzEmployee* XyzEmployeeManager::pFindEmployeeById(Edll<XyzEmployee*>& listPtrPa
  * @brief Finds an employee by name (or part of name).
  * @param ListPtrParm The list to search in.
  * @param NameParm The name or part of the name to search for.
- * @param results The list to store found employees.
+ * @param ResultParm The list to store found employees.
  */
 void XyzEmployeeManager::pFindEmployeeByName(Edll<XyzEmployee*>& ListPtrParm, const std::string& NameParm, Edll<XyzEmployee*>& ResultParm) const
 {
@@ -359,22 +374,24 @@ void XyzEmployeeManager::RemoveEmployee(const std::string& empId)
     std::cout << "Error: Employee with ID " << empId << " not found in any list.\n";
 }
 
-void XyzEmployeeManager::ResignEmployee(const std::string& empId) {
+void XyzEmployeeManager::ResignEmployee(const std::string& empId)
+{
     int index = -1;
-    XyzEmployee* emp = pFindEmployeeById(ActiveInactiveEmployeeList, empId, index);
+    XyzEmployee* sEmp = pFindEmployeeById(ActiveInactiveEmployeeList, empId, index);
 
-    if (emp && index != -1) {
+    if (sEmp && index != -1)
+    {
         // 1. Remove from active list
         ActiveInactiveEmployeeList.DeleteElementAtGivenIndex(index);
 
         // 2. Update status and DOL
-        emp->setStatus(RESIGNED);
+        sEmp->setStatus(RESIGNED);
         // Mock Date of Leaving to be current year
-        emp->setDOL("2025-10-03");
+        sEmp->setDOL("2025-10-03");
 
         // 3. Add to resigned list
-        ResignedEmployeeList.push_back(emp);
-        std::cout << "Employee " << emp->GetEmployeeName() << " (" << emp->GetEmployeeId() << ") resigned and moved to resigned list.\n";
+        ResignedEmployeeList.push_back(sEmp);
+        std::cout << "Employee " << sEmp->GetEmployeeName() << " (" << sEmp->GetEmployeeId() << ") resigned and moved to resigned list.\n";
         return;
     }
     std::cout << "Error: Employee with ID " << empId << " not found in active list.\n";
@@ -443,15 +460,15 @@ void XyzEmployeeManager::GetEmployeeSummaryByStatus(EmployeeStatus tarGetEmploye
 void XyzEmployeeManager::DisplayEmployeeDetails(const std::string& empId)
 {
     int index = -1;
-    XyzEmployee* emp = pFindEmployeeById(ActiveInactiveEmployeeList, empId, index);
-    if (!emp)
+    XyzEmployee* sEmp = pFindEmployeeById(ActiveInactiveEmployeeList, empId, index);
+    if (!sEmp)
     {
-        emp = pFindEmployeeById(ResignedEmployeeList, empId, index);
+        sEmp = pFindEmployeeById(ResignedEmployeeList, empId, index);
     }
 
-    if (emp)
+    if (sEmp)
     {
-        emp->PrintEmployeeDetails();
+        sEmp->PrintEmployeeDetails();
     } 
     else
     {
@@ -478,18 +495,18 @@ void XyzEmployeeManager::AddLeavesToFullTime(int numLeaves)
     std::cout << "Added " << numLeaves << " leaves to " << count << " Full-Time employees.\n";
 }
 
-void XyzEmployeeManager::ConvertInternToFullTime(const std::string& internId)
+void XyzEmployeeManager::ConvertInternToFullTime(const std::string& internIdParm)
 {
-    int index = -1;
-    XyzEmployee* emp = pFindEmployeeById(ActiveInactiveEmployeeList, internId, index);
+    int sIndex = -1;
+    XyzEmployee* emp = pFindEmployeeById(ActiveInactiveEmployeeList, internIdParm, sIndex);
 
     if (!emp || emp->GetEmployeeType() != INTERN) {
-        std::cout << "Error: Intern with ID " << internId << " not found in active list.\n";
+        std::cout << "Error: Intern with ID " << internIdParm << " not found in active list.\n";
         return;
     }
 
     // 1. Remove intern from active list
-    ActiveInactiveEmployeeList.DeleteElementAtGivenIndex(index);
+    ActiveInactiveEmployeeList.DeleteElementAtGivenIndex(sIndex);
 
     // 2. Create a new Full-Time Employee object using the intern's data
     XyzEmployee* newEmp = new XyzFullTimeEmployee(
@@ -500,7 +517,7 @@ void XyzEmployeeManager::ConvertInternToFullTime(const std::string& internId)
 
     // 4. Add the new Full-Time Employee to the active list
     ActiveInactiveEmployeeList.push_back(newEmp);
-    std::cout << "Intern " << internId << " converted successfully to Full-Time Employee (" << newEmp->GetEmployeeId() << ").\n";
+    std::cout << "Intern " << internIdParm << " converted successfully to Full-Time Employee (" << newEmp->GetEmployeeId() << ").\n";
 }
 
 void XyzEmployeeManager::SearchEmployeeByID(const std::string& empId)
