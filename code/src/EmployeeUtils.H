@@ -1,8 +1,9 @@
 #ifndef _EMPLOYEE_UTILS_H_ 
 #define _EMPLOYEE_UTILS_H_
-// Global counter for sequential employee ID generation
-// int employeeIdCounter = 0;
 #include "EmployeeIF.H"
+#include <cstdio>
+#include <string>
+
 int employeeIdCounter = 0;
 
 enum EmployeeType
@@ -71,6 +72,7 @@ public:
     static std::string AgencyToString(Agency AgencyParm);
     static std::string generateEmployeeId(EmployeeType TypeParm);
     static int getRandomInt(int MinParm, int MaxParm);
+    static std::string genDate(int StartYearParm, int EndYearParm);
 };
 
 std::string EmployeeUtils:: EmployeeTypeToString(EmployeeType TypeParm)
@@ -205,6 +207,23 @@ std::string EmployeeUtils::generateEmployeeId(EmployeeType TypeParm)
 int EmployeeUtils::getRandomInt(int MinParm, int MaxParm)
 {
     return (MinParm + (std::rand() % (MaxParm - MinParm + 1)));
+}
+
+std::string EmployeeUtils::genDate(int StartYearParm, int EndYearParm)
+{
+    int sYear = EmployeeUtils::getRandomInt(StartYearParm, EndYearParm);
+    int sMonth = EmployeeUtils::getRandomInt(1, 12);
+    int sMonthdays[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+    int sMaxd = sMonthdays[sMonth - 1];
+    // simple leap-year handling for February
+    if (sMonth == 2 && ((sYear % 4 == 0 && sYear % 100 != 0) || (sYear % 400 == 0)))
+    {
+        sMaxd = 29;
+    }
+    int sDay = EmployeeUtils::getRandomInt(1, sMaxd);
+    char sBuf[16];
+    std::snprintf(sBuf, sizeof(sBuf), "%04d-%02d-%02d", sYear, sMonth, sDay);
+    return std::string(sBuf);
 }
 
 #endif

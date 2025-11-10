@@ -12,9 +12,8 @@
 #include <string>
 #include <iostream>
 #include <chrono>
+#include <cstdio>
 
-using namespace std::chrono;
-using namespace std::chrono_literals;
 
 class XyzEmployeeManager
 {
@@ -52,13 +51,15 @@ class XyzEmployeeManager
 XyzEmployee* XyzEmployeeManager::pCreateRandomEmployee()
 {
         // Mock data
-        std::string sMockNames[] = {"Divya", "Shahjahan", "Kumar", "Rohini", "Aditya", "Debashish", "Nitisha"};
-        std::string sMockDOB = "1990-01-01";
-        std::string sMockDOJ = "2024-01-01";
-        std::string sMockDOL = "2025-12-25";
+        std::string sMockNames[] = {"Divya", "Shahjahan", "Kumar", "Rohini", "Aditya", "Debashish", "Nitisha", "srinivas",                                    "karthik","aniketh","surya","Dilip","veeramani","arun","isha","priyanka","jagan", "gnani", "jaswith", "Prathima","Teja","Prasanna"};
+
+        std::string sMockDOB = EmployeeUtils::genDate(1970, 2005);
+        std::string sMockDOJ = EmployeeUtils::genDate(2015, 2025);
+        std::string sMockDOL = EmployeeUtils::genDate(2026, 2026);
+
         std::string sEmpId;
 
-        std::string sName = sMockNames[EmployeeUtils::getRandomInt(0, 6)];
+        std::string sName = sMockNames[EmployeeUtils::getRandomInt(0, 21)];
         EmployeeType sType = EmployeeUtils::getRandomEnum<EmployeeType>(EMP_TYPE_COUNT);
         EmployeeStatus sStatus = EmployeeUtils::getRandomEnum<EmployeeStatus>(EMP_STATUS_COUNT);
         Gender sGender = EmployeeUtils::getRandomEnum<Gender>(GENDER_COUNT);
@@ -126,9 +127,6 @@ XyzEmployee* XyzEmployeeManager::pCreateManualEmployee()
         
         std::cout << "Enter Date of Joining (YYYY-MM-DD): ";
         std::cin >> sDOJ;
-        
-       // std::cout << "Enter Date of Leaving (YYYY-MM-DD): ";
-       // std::cin >> sDOL;
         
         // Get Gender
         std::cout << "Select Gender (0: Male, 1: Female, 2: Other): ";
@@ -312,7 +310,7 @@ void XyzEmployeeManager::AddEmployee()
     {
         if (newEmp->GetEmployeeStatus() == RESIGNED)
         {
-            // If Given Em,ployee status as resigned, put in resigned list
+            // If Given Employee status as resigned, put in resigned list
             ResignedEmployeeList.push_back(newEmp);
         } else
         {
@@ -401,9 +399,9 @@ void XyzEmployeeManager::ResignEmployee(const std::string& empId)
 
 void XyzEmployeeManager::GetFullSummary()
 {
-    std::cout << "\n--- ALL EMPLOYEES SUMMARY (ACTIVE/INACTIVE) ---\n";
+    std::cout << "\n---EMPLOYEES SUMMARY(ACTIVE/INACTIVE)---\n";
     pPrintEmployeeSummary(ActiveInactiveEmployeeList);
-    std::cout << "\n--- RESIGNED EMPLOYEES SUMMARY ---\n";
+    std::cout << "\n---RESIGNED EMPLOYEES SUMMARY---\n";
     pPrintEmployeeSummary(ResignedEmployeeList);
 }
 
