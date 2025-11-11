@@ -41,12 +41,10 @@ class Menu
     public:
         static void DisplayMainMenuOptions();
         static void DisplayAddAnEmployeeMenu();
-        static void DisplayMainMenu2Options();
         static void DisplayGetEmployeeDetailsMenu();
         static void DisplayDoSomethingElseMenu();
         static void MainMenu();
         static void AddAnEmployee();
-        static void MainMenu2();
         static void GetEmployeeDetails();
         static void DoSomethingElse();
 };
@@ -57,7 +55,10 @@ void Menu::DisplayMainMenuOptions()
     std::cout <<" |     Employee Management System   | "<< std::endl;
     std::cout <<" -----------------------------------  "<< std::endl;
     std::cout <<" |       1.Add an Employee          | "<< std::endl;
-    std::cout <<" |      -1. to Exit                 | "<< std::endl;
+    std::cout <<" |       2.Remove an Employee       | "<< std::endl;
+    std::cout <<" |       3.Get Employee Details     | "<< std::endl;
+    std::cout <<" |       4.Do Something else        | "<< std:: endl;
+    std::cout <<" |      -1 to Exit                  | "<< std::endl;
     std::cout <<" -----------------------------------  "<< std::endl;
     std::cout <<"Enter Your Choice:";
 } 
@@ -73,19 +74,6 @@ void Menu::DisplayAddAnEmployeeMenu()
     std::cout <<" |  -1.To go back to MainMenu       | "<< std::endl;
     std::cout <<" -----------------------------------  "<< std::endl;
     std::cout <<" Enter Your Choice:";
-}
-
-void Menu::DisplayMainMenu2Options()
-{
-    std::cout <<" ----------------------------------- "<< std::endl;
-    std::cout <<" |     Employee Management System   | "<< std::endl;
-    std::cout <<" -----------------------------------  "<< std::endl;
-    std::cout <<" |       2.Remove an Employee       | "<< std::endl;
-    std::cout <<" |       3.Get Employee Details     | "<< std::endl;
-    std::cout <<" |       4.Do Something else        | "<< std:: endl;
-    std::cout <<" |      -1 to go back               | "<< std::endl;
-    std::cout <<" -----------------------------------  "<< std::endl;
-    std::cout <<"Enter Your Choice:";
 }
 
 void Menu::DisplayGetEmployeeDetailsMenu()
@@ -135,35 +123,8 @@ void Menu::MainMenu()
             case ADD_EMPLOYEE:
             {
                 AddAnEmployee();
-                if (sUserChoice != -1) {
-                    MainMenu2();
-                }
                 break;
             }
-            case EXIT:
-            {
-                std::cout << "you choose to exit! Good bye!" << std::endl;
-                continueMainMenu = false;
-                break;
-            }
-            default:
-            {
-                std::cout << "Invalid User Choice! Please try again" << std::endl;
-            }
-        }
-    }
-    return;
-}
-
-void Menu::MainMenu2()
-{
-    int sUserChoice1;
-    do
-    {
-        DisplayMainMenu2Options();
-        std::cin >> sUserChoice1;
-        switch(sUserChoice1)
-        {
             case REMOVE_AN_EMPLOYEE:
             {
                 std::string sEmpId;
@@ -184,16 +145,16 @@ void Menu::MainMenu2()
             }
             case EXIT:
             {
-                std::cout << "You Choose to Exit! going Back to Main Menu" << std::endl;
+                std::cout << "you choose to exit! Good bye!" << std::endl;
+                continueMainMenu = false;
                 break;
             }
             default:
             {
-                std::cout << "Invalid User Entry! Try Again!" << std::endl;
-                break;
+                std::cout << "Invalid User Choice! Please try again" << std::endl;
             }
         }
-    }while(sUserChoice1 != -1);
+    }
     return;
 }
 
@@ -212,18 +173,16 @@ void Menu::AddAnEmployee()
             case ADD_AN_EMPLOYEE_AT_RANDOM:
                 {
                     manager.AddRandomEmployee();
-                    continueAddMenu = false;
                     break;
                 }
             case ADD_AN_EMPLOYEE_F_C_I:
                 {
                     manager.AddEmployee();
-                    continueAddMenu = false;
                     break;
                 }
             case EXIT:
                 {
-                    std::cout << "You Choose Exit! Going back to main Menu" <<std::endl;
+                    std::cout << "Going back to main Menu" <<std::endl;
                     continueAddMenu = false;
                     break;
                 }

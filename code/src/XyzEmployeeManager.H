@@ -51,7 +51,7 @@ class XyzEmployeeManager
 XyzEmployee* XyzEmployeeManager::pCreateRandomEmployee()
 {
         // Mock data
-        std::string sMockNames[] = {"Divya", "Shahjahan", "Kumar", "Rohini", "Aditya", "Debashish", "Nitisha", "srinivas",                                    "karthik","aniketh","surya","Dilip","veeramani","arun","isha","priyanka","jagan", "gnani", "jaswith", "Prathima","Teja","Prasanna"};
+        std::string sMockNames[] = {"Divya", "Shahjahan", "Kumar", "Rohini", "Aditya", "Debashish", "Nitisha", "lakshmi",                                    "karthik","aniketh","surya","Dilip","veeramani","arun","isha","priyanka","jagan", "gnani", "jaswith", "Prathima","Teja","Prasanna"};
 
         std::string sMockDOB = EmployeeUtils::genDate(1970, 2005);
         std::string sMockDOJ = EmployeeUtils::genDate(2015, 2025);
