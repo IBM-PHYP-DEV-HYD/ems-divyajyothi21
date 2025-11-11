@@ -3,8 +3,12 @@
 #include "EmployeeIF.H"
 #include <cstdio>
 #include <string>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
+#include <iostream>
 
-int employeeIdCounter = 0;
+//int GetEmpIdCounter() = 0;
 
 enum EmployeeType
 {
@@ -56,6 +60,8 @@ enum Agency
 
 class EmployeeUtils
 {
+private:
+    static int mEmployeeIdCounter;
 public:
     EmployeeUtils();
     ~EmployeeUtils();
@@ -73,6 +79,10 @@ public:
     static std::string generateEmployeeId(EmployeeType TypeParm);
     static int getRandomInt(int MinParm, int MaxParm);
     static std::string genDate(int StartYearParm, int EndYearParm);
+    static int GetEmpIdCounter();
+    static std::string CalculateFutureDate(const std::string& InputDateParm,
+                                           int MonthsParm,
+                                           int YearsParm);
 };
 
 std::string EmployeeUtils:: EmployeeTypeToString(EmployeeType TypeParm)
@@ -159,7 +169,7 @@ std::string EmployeeUtils::AgencyToString(Agency AgencyParm)
         case AVENGERS:
             return "Avengers";
         case JUSTICE_LEAGUE:
-            return "Justice League";
+            return "JusticeLeague";
         case X_MEN:
             return "X-Men";
         default:
@@ -173,9 +183,9 @@ std::string EmployeeUtils::AgencyToString(Agency AgencyParm)
  */
 std::string EmployeeUtils::generateEmployeeId(EmployeeType TypeParm)
 {
-    employeeIdCounter++;
+    int sIdCount = GetEmpIdCounter();
     std::string sPrefix = "XYZ";
-    std::string sNum = std::to_string(employeeIdCounter);
+    std::string sNum = std::to_string(sIdCount);
     // Pad with leading zeros to make it 4 digits
     while (sNum.length() < 4)
     {
@@ -223,5 +233,43 @@ std::string EmployeeUtils::genDate(int StartYearParm, int EndYearParm)
     std::snprintf(sBuf, sizeof(sBuf), "%04d-%02d-%02d", sYear, sMonth, sDay);
     return std::string(sBuf);
 }
+
+int EmployeeUtils::GetEmpIdCounter()
+{
+    return ++mEmployeeIdCounter; 
+}
+
+std::string EmployeeUtils::CalculateFutureDate(
+    const std::string& InputDateParm, 
+    int MonthsParm, 
+    int YearsParm) 
+{
+    // 1. Convert the input string (YYYY-MM-DD) into a std::tm struct
+    std::tm DateTm = {};
+    std::stringstream DateStringStream(InputDateParm);
+    
+    // Attempt to parse the date from the string stream
+    // %Y: 4-digit year, %m: 2-digit month, %d: 2-digit day
+    if (!(DateStringStream >> std::get_time(&DateTm, "%Y-%m-%d"))) {
+        return 0;
+    }
+
+    // 2. Modify the month and year fields
+    // tm_mon is 0-11, so 6 months is +6, 1 year is +12 months.
+    DateTm.tm_mon += MonthsParm + (YearsParm * 12); 
+
+    // 3. Normalize the date using std::mktime
+    // This critical step handles rollovers (e.g., month 15 becomes next year's March)
+    std::mktime(&DateTm);
+
+    // 4. Format the resulting std::tm struct back into a YYYY-MM-DD string
+    std::stringstream sOutputStringStream;
+    sOutputStringStream << std::put_time(&DateTm, "%Y-%m-%d");
+
+    return sOutputStringStream.str();
+}
+
+// Define the static member variable
+int EmployeeUtils::mEmployeeIdCounter = 0;
 
 #endif

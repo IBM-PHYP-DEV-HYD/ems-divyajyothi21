@@ -14,7 +14,6 @@
 #include <chrono>
 #include <cstdio>
 
-
 class XyzEmployeeManager
 {
     private:
@@ -73,6 +72,7 @@ XyzEmployee* XyzEmployeeManager::pCreateRandomEmployee()
             case FULL_TIME:
             {
                 int sLeaves = EmployeeUtils::getRandomInt(0, 22);
+                sMockDOL = "NA";
                 sEmp = new XyzFullTimeEmployee(sName,sEmpId,sType, sGenderString, sMockDOJ,sMockDOB,sStatus,sMockDOL,sLeaves);
                 break;
             }
@@ -80,6 +80,7 @@ XyzEmployee* XyzEmployeeManager::pCreateRandomEmployee()
             {
                 Agency sAgency = EmployeeUtils::getRandomEnum<Agency>(AGENCY_COUNT);
                 std::string sAgencyString = EmployeeUtils::AgencyToString(sAgency);
+                sMockDOL = sMockDOJ + EmployeeUtils::CalculateFutureDate(sMockDOJ, 6, 0);
                 sEmp = new XyzContractorEmployee(sName, sEmpId, sType, sGenderString, sMockDOJ, sMockDOB, sStatus, sMockDOL, sAgency);
                 break;
             }
@@ -87,6 +88,7 @@ XyzEmployee* XyzEmployeeManager::pCreateRandomEmployee()
             {
                 College sCollege = EmployeeUtils::getRandomEnum<College>(COLLEGE_COUNT);
                 Branch sBranch = EmployeeUtils::getRandomEnum<Branch>(BRANCH_COUNT);
+                sMockDOL = sMockDOJ + EmployeeUtils::CalculateFutureDate(sMockDOJ, 0, 1);
                 sEmp = new XyzInternEmployee(sName, sEmpId, sType, sGenderString, sMockDOJ,sMockDOB,sStatus,sMockDOL, sCollege, sBranch);
                 break;
             }
@@ -267,7 +269,7 @@ void XyzEmployeeManager::pPrintEmployeeSummary(Edll<XyzEmployee*>& ListParm) con
         XyzContractorEmployee* sContractorEmp = dynamic_cast<XyzContractorEmployee*>(emp);
         XyzInternEmployee* sInternEmp = dynamic_cast<XyzInternEmployee*>(emp);
         
-        printf("%-17s | %-9s | %-10s | %-8s | %-7s | %-12s | %-12s | %-12s | %d | %-8s | %-8s | %-8s \n",
+        printf("|%-17s | %-9s | %-10s | %-8s | %-7s | %-12s | %-12s | %-12s | %d | %-8s | %-8s | %-8s |\n",
                emp->GetEmployeeName().c_str(), emp->GetEmployeeId().c_str(),
                EmployeeUtils::EmployeeTypeToString(emp->GetEmployeeType()).c_str(),
                EmployeeUtils::EmployeeStatusToString(emp->GetEmployeeStatus()).c_str(),
@@ -476,23 +478,30 @@ void XyzEmployeeManager::DisplayEmployeeDetails(const std::string& empId)
     }
 }
 
-// --- Sub-Menu 3 Operations ---
-
-void XyzEmployeeManager::AddLeavesToFullTime(int numLeaves)
+void XyzEmployeeManager::AddLeavesToFullTime(int LeavesParm)
 {
-    Node<XyzEmployee*>* current = ActiveInactiveEmployeeList.getHead();
-    int count = 0;
-    while (current != nullptr) {
-        if (current->mData->GetEmployeeType() == FULL_TIME) {
-            XyzFullTimeEmployee* ft_emp = dynamic_cast<XyzFullTimeEmployee*>(current->mData);
-            if (ft_emp) {
-                ft_emp->AddLeaves(numLeaves);
-                count++;
+    Node<XyzEmployee*>* sCurrentPtr = NULL;
+    int sCount = 0;
+    if (LeavesParm >= 22 || LeavesParm <= 0)
+    {
+        std::cout << "Invalid number of leaves given" << std::endl;
+        return; 
+    }
+    sCurrentPtr = ActiveInactiveEmployeeList.getHead();
+    while (sCurrentPtr != nullptr)
+    {
+        if (sCurrentPtr->mData->GetEmployeeType() == FULL_TIME)
+        {
+            XyzFullTimeEmployee* sFullEmpPtr = dynamic_cast<XyzFullTimeEmployee*>(sCurrentPtr->mData);
+            if (sFullEmpPtr)
+            {
+                sFullEmpPtr->AddLeaves(LeavesParm);
+                sCount++;
             }
         }
-        current = current->mNext;
+        sCurrentPtr = sCurrentPtr->mNext;
     }
-    std::cout << "Added " << numLeaves << " leaves to " << count << " Full-Time employees.\n";
+    std::cout << "Added " << LeavesParm << " leaves to " << sCount << " Full-Time employees.\n";
 }
 
 void XyzEmployeeManager::ConvertInternToFullTime(const std::string& internIdParm)

@@ -1,6 +1,8 @@
 #ifndef _TESTMENU_H_
 #define _TESTMENU_H_
 #include "XyzEmployeeManager.H"
+#include "Utils.H"
+
 //Global Manager Instance/Object.
 XyzEmployeeManager manager;
 
@@ -117,7 +119,7 @@ void Menu::MainMenu()
     while(continueMainMenu)
     {
         Menu::DisplayMainMenuOptions();
-        std::cin >> sUserChoice;
+        Utils<int>::GetValidatedUserInput(sUserChoice);
         switch(sUserChoice)
         {
             case ADD_EMPLOYEE:
@@ -129,7 +131,7 @@ void Menu::MainMenu()
             {
                 std::string sEmpId;
                 std::cout << "Enter Employee ID to be removed"<<std::endl;
-                std::cin >> sEmpId;
+                Utils<std::string>::GetValidatedUserInput(sEmpId);
                 manager.RemoveEmployee(sEmpId);
                 break;
             }
@@ -166,8 +168,7 @@ void Menu::AddAnEmployee()
    while(continueAddMenu) 
    {
        DisplayAddAnEmployeeMenu();
-       std::cin >> sUserChoice;
-       
+       Utils<int>::GetValidatedUserInput(sUserChoice);       
        switch(sUserChoice)
        {
             case ADD_AN_EMPLOYEE_AT_RANDOM:
@@ -200,7 +201,7 @@ void Menu::GetEmployeeDetails()
 {
     int sUserChoice;
     DisplayGetEmployeeDetailsMenu();
-    std::cin >> sUserChoice;
+    Utils<int>::GetValidatedUserInput(sUserChoice);
     while(sUserChoice != -1)
     {
         switch(sUserChoice)
@@ -214,8 +215,7 @@ void Menu::GetEmployeeDetails()
                 {
                  int sTypeChoice;
                  std::cout << "Select Type (0: Full-Time, 1: Contractor, 2: Intern): "<< std::endl;
-                 //Add validation logic
-                 std::cin >> sTypeChoice;
+                 Utils<int>::GetValidatedUserInput(sTypeChoice);
                  manager.GetEmployeeSummaryByType(static_cast<EmployeeType>(sTypeChoice));
                  break;
                 }
@@ -223,7 +223,7 @@ void Menu::GetEmployeeDetails()
                 {
                  std::cout << "Select Gender (0: Male, 1: Female, 2: Other): " << std::endl;
                  int sGender;
-                 std::cin >> sGender;
+                 Utils<int>::GetValidatedUserInput(sGender);
                  manager.GetEmployeeSummaryByGender(static_cast<Gender>(sGender));
                  break;
                 }
@@ -231,7 +231,7 @@ void Menu::GetEmployeeDetails()
                 {
                  std::cout << "Select Status (0: Active, 1: Inactive, 2: Resigned): ";
                  int sStatus;
-                 std::cin >> sStatus;
+                 Utils<int>::GetValidatedUserInput(sStatus);
                  manager.GetEmployeeSummaryByStatus(static_cast<EmployeeStatus>(sStatus));
                  break;
                 }
@@ -239,7 +239,7 @@ void Menu::GetEmployeeDetails()
                 {
                  std::string sEmpId;
                  std::cout << "Enter Employee ID (e.g., XYZ0001F): ";
-                 std::cin >> sEmpId;
+                 Utils<std::string>::GetValidatedUserInput(sEmpId);
                  manager.DisplayEmployeeDetails(sEmpId);
                  break;
                 }
@@ -254,7 +254,7 @@ void Menu::GetEmployeeDetails()
                 }
         }
         DisplayGetEmployeeDetailsMenu();
-        std::cin >> sUserChoice;
+        Utils<int>::GetValidatedUserInput(sUserChoice);
     }
     return;
 }
@@ -265,14 +265,14 @@ void Menu::DoSomethingElse()
     do
     {
         DisplayDoSomethingElseMenu();
-        std::cin >> sUserChoice;
+        Utils<int>::GetValidatedUserInput(sUserChoice);
         switch(sUserChoice)
         {
             case ADD_N_NUMBER_OF_LEAVES_TO_ALL_FULLTIME_EMPLOYEES:
                 {
                 int sLeaves;
-                std::cout << "Enter number of leaves to add: ";
-                std::cin >> sLeaves;
+                std::cout << "Enter number of leaves to add:(1-22)";
+                Utils<int>::GetValidatedUserInput(sLeaves);
                 manager.AddLeavesToFullTime(sLeaves);
                 break;
                 }
@@ -280,7 +280,7 @@ void Menu::DoSomethingElse()
                 {
                 std::string sEmpId;
                 std::cout << "Enter Intern Employee ID: ";
-                std::cin >> sEmpId;
+                Utils<std::string>::GetValidatedUserInput(sEmpId);
                 manager.ConvertInternToFullTime(sEmpId);
                 break;
                 }
@@ -288,14 +288,14 @@ void Menu::DoSomethingElse()
                 {
                 std::string sEmpId;
                 std::cout << "Enter Employee ID (e.g., XYZ0001F): ";
-                std::cin >> sEmpId;
+                Utils<std::string>::GetValidatedUserInput(sEmpId);
                 manager.SearchEmployeeByID(sEmpId);
                 break;
                 }
             case SEARCH_EMPLOYEE_DETAILS_BYNAME:
                 {
                 std::string sName;
-                std::cout << "Enter Name / part of the name: ";
+                std::cout << "Enter Name: ";
                 std::cin.ignore();
                 std::getline(std::cin, sName);
                 manager.searchEmployeeByName(sName);
