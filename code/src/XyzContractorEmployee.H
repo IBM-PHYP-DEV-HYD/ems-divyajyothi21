@@ -19,7 +19,6 @@ class XyzContractorEmployee:public XyzEmployee
                           EmployeeStatus EmployeeStatusParm,
                           std::string DolParm,
                           Agency AgencyParm);
-    XyzContractorEmployee(const XyzContractorEmployee& OtherParm);
     ~XyzContractorEmployee();    
     Agency GetAgencyName();
     void PrintEmployeeDetails() const;
@@ -48,11 +47,6 @@ XyzContractorEmployee::XyzContractorEmployee(std::string NameParm,
              DolParm),mAgency(AgencyParm)
 {
     std::cout << "Created XyzContractor Parameterized Constructor" << std::endl;
-}
-
-XyzContractorEmployee::XyzContractorEmployee(const XyzContractorEmployee& OtherParm):XyzEmployee(OtherParm), mAgency(OtherParm.mAgency)
-{
-    std::cout << "Creating XyzContractorEmployee Copy Constructor" << std::endl;
 }
 
 XyzContractorEmployee::~XyzContractorEmployee()

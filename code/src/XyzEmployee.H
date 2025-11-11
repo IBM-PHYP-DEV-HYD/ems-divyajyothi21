@@ -24,7 +24,6 @@ public:
              std::string DobParm,
              EmployeeStatus EmployeeStatusParm,
              std::string DolParm); //Parameterized constructor
-    XyzEmployee(const EmployeeIF& OtherParm); //Copy Constructor
     virtual ~XyzEmployee(); //Destructor
 
     //Getters
@@ -76,18 +75,6 @@ XyzEmployee::XyzEmployee(std::string NameParm,
         this->mDateOfLeaving = "2025-12-1";
     } 
     std::cout << "Parameterized Constructor got created" << std::endl;
-}
-
-XyzEmployee::XyzEmployee(const EmployeeIF& OtherParm)
-    : mName(OtherParm.GetEmployeeName()),             
-      mEmployeeId(OtherParm.GetEmployeeId()),         
-      mGender(OtherParm.GetEmployeeGender()),                 
-      mDateOfJoining(OtherParm.GetEmployeeDOJ()),
-      mDateOfBirth(OtherParm.GetEmployeeDOB()),
-      mEmployeeStatus(OtherParm.GetEmployeeStatus()),
-      mDateOfLeaving(OtherParm.GetEmployeeDOL())
-{
-    std::cout << "Copy Constructor created" <<std::endl;    
 }
 
 XyzEmployee::~XyzEmployee()

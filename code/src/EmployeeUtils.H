@@ -173,9 +173,7 @@ std::string EmployeeUtils::AgencyToString(Agency AgencyParm)
  */
 std::string EmployeeUtils::generateEmployeeId(EmployeeType TypeParm)
 {
-    std::cout << "incrementing employeeIdCounter" << employeeIdCounter << std::endl;
     employeeIdCounter++;
-    std::cout << "After incrementing employeeIdCounter" << employeeIdCounter << std::endl;
     std::string sPrefix = "XYZ";
     std::string sNum = std::to_string(employeeIdCounter);
     // Pad with leading zeros to make it 4 digits

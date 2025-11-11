@@ -107,8 +107,7 @@ XyzEmployee* XyzEmployeeManager::pCreateRandomEmployee()
 }
 
 /**
-* @brief Helper to generate sEmployee data manually from user input.
-* @param type The type of sEmployee to create.
+* @brief Helper to generate Employee data manually from user input.
 * @return XyzEmployee* pointer to a new dynamically allocated sEmployee object.
 */
 XyzEmployee* XyzEmployeeManager::pCreateManualEmployee()
@@ -184,16 +183,16 @@ XyzEmployee* XyzEmployeeManager::pCreateManualEmployee()
 
 /**
 * @brief Iterates through a list and finds an employee by ID.
-* @param list The list to search in.
-* @param id The Employee ID string to match.
-* @param index The output variable to store the 0-based index if found.
+* @param listPtrParm The list to search in.
+* @param IdParm The Employee ID string to match.
+* @param IndexParm The output variable to store the 0-based index if found.
 * @return XyzEmployee* The pointer to the found employee, or nullptr if not found.
 */
 XyzEmployee* XyzEmployeeManager::pFindEmployeeById(Edll<XyzEmployee*>& listPtrParm, const std::string& IdParm, int& IndexParm) const
 {
     Node<XyzEmployee*>* sCurrent = listPtrParm.getHead();
     IndexParm = 0;
-    while (sCurrent != nullptr)
+    while (sCurrent != NULL)
     {
        if (sCurrent->mData->GetEmployeeId() == IdParm)
        {
@@ -203,7 +202,7 @@ XyzEmployee* XyzEmployeeManager::pFindEmployeeById(Edll<XyzEmployee*>& listPtrPa
        ++IndexParm;
     }
     IndexParm = -1; // Not found
-    return nullptr;
+    return NULL;
 }
 
 /**
@@ -400,13 +399,11 @@ void XyzEmployeeManager::ResignEmployee(const std::string& empId)
     std::cout << "Error: Employee with ID " << empId << " not found in active list.\n";
 }
 
-
-
 void XyzEmployeeManager::GetFullSummary()
 {
-    std::cout << "\n---EMPLOYEES SUMMARY(ACTIVE/INACTIVE)---\n";
+    std::cout << "\n====ACTIVE-INACTIVE EMPLOYEES SUMMARY====\n";
     pPrintEmployeeSummary(ActiveInactiveEmployeeList);
-    std::cout << "\n---RESIGNED EMPLOYEES SUMMARY---\n";
+    std::cout << "\n====RESIGNED EMPLOYEES SUMMARY====\n";
     pPrintEmployeeSummary(ResignedEmployeeList);
 }
 

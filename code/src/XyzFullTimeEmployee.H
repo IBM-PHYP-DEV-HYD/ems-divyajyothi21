@@ -17,7 +17,6 @@ class XyzFullTimeEmployee:public XyzEmployee
              EmployeeStatus EmployeeStatusParm,
              std::string DolParm,
              uint8_t AvailedLeavesParm);
-    XyzFullTimeEmployee(const XyzFullTimeEmployee& OtherParm);
     ~XyzFullTimeEmployee();
     void AddLeaves(int nParam);
     int GetLeavesAvailed();
@@ -78,11 +77,6 @@ void XyzFullTimeEmployee::PrintEmployeeDetails() const
         std::cout << "Leaves Availed : " << this->mLeavesAvailed << std::endl;
         std::cout << "Leaves Left    : " << (22 - this->mLeavesAvailed) << std::endl;
         std::cout << "-----------------------------------------" <<std::endl;
-}
-
-XyzFullTimeEmployee::XyzFullTimeEmployee(const XyzFullTimeEmployee& OtherParm):XyzEmployee(OtherParm)
-{
-    std::cout << "Creating a Copy Constructor For XyzFullTimeEmployee" << std::endl;
 }
 
 XyzFullTimeEmployee::~XyzFullTimeEmployee()

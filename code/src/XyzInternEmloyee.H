@@ -21,7 +21,6 @@ class XyzInternEmployee:public XyzEmployee
              std::string DolParm,
              College CollegeParm,
              Branch BranchParm);
-        XyzInternEmployee(const XyzInternEmployee& OtherParm);
         ~XyzInternEmployee();
         College GetCollegeName();
         Branch GetBranch();
@@ -52,11 +51,6 @@ XyzInternEmployee::XyzInternEmployee(std::string NameParm,
              DolParm),mCollege(CollegeParm),mBranch(BranchParm)
 {
     std::cout << "Creating a XyzInternEmployee Parameterized Constructor" << std::endl;
-}
-
-XyzInternEmployee::XyzInternEmployee(const XyzInternEmployee& OtherParm):XyzEmployee(OtherParm),mCollege(OtherParm.mCollege),mBranch(OtherParm.mBranch)
-{
-    std::cout << "Creating a XyzInternEmployee Copy Constructor" << std::endl;
 }
 
 XyzInternEmployee::~XyzInternEmployee()
