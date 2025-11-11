@@ -257,7 +257,7 @@ void Menu::GetEmployeeDetails()
                  std::cout << "Select Type (0: Full-Time, 1: Contractor, 2: Intern): "<< std::endl;
                  //Add validation logic
                  std::cin >> sTypeChoice;
-                 manager.GetFullSummary();
+                 manager.GetEmployeeSummaryByType(static_cast<EmployeeType>(sTypeChoice));
                  break;
                 }
             case EMPLOYEE_SUMMARY_M_F:

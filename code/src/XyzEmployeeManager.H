@@ -257,22 +257,27 @@ void XyzEmployeeManager::pPrintEmployeeSummary(Edll<XyzEmployee*>& ListParm) con
         std::cout << "No employees in this list.\n";
         return;
     }
-    std::cout << "\n----------------------------------------------------------------------------------------------------------------------\n";
-    std::cout << "Employee Name      | ID        | Type        | Status    | Gender | Date of Birth | Date of Joining | Date of Leaving\n";
-    std::cout << "----------------------------------------------------------------------------------------------------------------------\n";
+    std::cout << "\n-------------------------------------------------------------------------------------------------------------------------------------------------------\n";
+    std::cout << "|Employee Name    | ID        | Type        | Status    | Gender | Date of Birth | Date of Joining | Date of Leaving| Leaves | Agency | College| Branch|\n";
+    std::cout << "--------------------------------------------------------------------------------------------------------------------------------------------------------\n";
     Node<XyzEmployee*>* sCurrent = ListParm.getHead();
     while (sCurrent != nullptr)
     {
         XyzEmployee* emp = sCurrent->mData;
-        printf("%-18s | %-9s | %-11s | %-9s | %-6s | %-13s | %-15s | %s\n",
+        XyzFullTimeEmployee* sFulltimeEmp = dynamic_cast<XyzFullTimeEmployee*>(emp);
+        XyzContractorEmployee* sContractorEmp = dynamic_cast<XyzContractorEmployee*>(emp);
+        XyzInternEmployee* sInternEmp = dynamic_cast<XyzInternEmployee*>(emp);
+        
+        printf("%-17s | %-9s | %-10s | %-8s | %-7s | %-12s | %-12s | %-12s | %d | %-8s | %-8s | %-8s \n",
                emp->GetEmployeeName().c_str(), emp->GetEmployeeId().c_str(),
                EmployeeUtils::EmployeeTypeToString(emp->GetEmployeeType()).c_str(),
                EmployeeUtils::EmployeeStatusToString(emp->GetEmployeeStatus()).c_str(),
                (emp->GetEmployeeGender()).c_str(),
-               emp->GetEmployeeDOB().c_str(), emp->GetEmployeeDOJ().c_str(), emp->GetEmployeeDOL().c_str());
+               emp->GetEmployeeDOB().c_str(), emp->GetEmployeeDOJ().c_str(), emp->GetEmployeeDOL().c_str(),
+               (emp->GetEmployeeType() == FULL_TIME ? sFulltimeEmp->GetLeavesAvailed(): 0), (emp->GetEmployeeType() == CONTRACTOR ?EmployeeUtils::AgencyToString(sContractorEmp->GetAgencyName()).c_str():"NA"),(emp->GetEmployeeType() == INTERN?EmployeeUtils::CollegeToString(sInternEmp->GetCollegeName()).c_str():"NA"),(emp->GetEmployeeType() == INTERN?EmployeeUtils::BranchToString(sInternEmp->GetBranch()).c_str():"NA"));
         sCurrent = sCurrent->mNext;
     }
-    std::cout << "----------------------------------------------------------------------------------------------------------------------\n";
+    std::cout << "--------------------------------------------------------------------------------------------------------------------------------------------------------\n";
 }
 
 

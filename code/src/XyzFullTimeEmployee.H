@@ -51,6 +51,10 @@ XyzFullTimeEmployee::XyzFullTimeEmployee(std::string NameParm,
 
 void XyzFullTimeEmployee::AddLeaves(int Nparm)
 {
+        if(Nparm > 22 || Nparm <= 0)
+        {
+            std::cout << "Noting to get added to as invalid value" << std::endl;
+        }
         this->mLeavesAvailed += Nparm;
         if (this->mLeavesAvailed > 22) this->mLeavesAvailed = 22; // Max leaves is 22
 }
