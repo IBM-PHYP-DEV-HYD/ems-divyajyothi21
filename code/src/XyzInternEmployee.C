@@ -1,31 +1,4 @@
-#ifndef _INTERN_EMPLOYEE_H_
-#define _INTERN_EMPLOYEE_H_
-#include "XyzEmployee.H"
-#include <string>
-#include <iostream>
-
-class XyzInternEmployee:public XyzEmployee
-{
-    private:
-        College mCollege;
-        Branch mBranch;
-    public:
-        XyzInternEmployee();
-        XyzInternEmployee(std::string NameParm,
-             std::string IdParm,
-             EmployeeType EmpTypeParam,
-             std::string GenderParm,
-             std::string DojParm,
-             std::string DobParm,
-             EmployeeStatus EmployeeStatusParm,
-             std::string DolParm,
-             College CollegeParm,
-             Branch BranchParm);
-        ~XyzInternEmployee();
-        College GetCollegeName();
-        Branch GetBranch();
-        void PrintEmployeeDetails() const;
-};
+#include "XyzInternEmployee.H"
 
 XyzInternEmployee::XyzInternEmployee():XyzEmployee()
 {
@@ -82,6 +55,21 @@ void XyzInternEmployee::PrintEmployeeDetails() const
         std::cout << "College        : " << EmployeeUtils::CollegeToString(this->mCollege) << std::endl;
         std::cout << "Branch         : "  << EmployeeUtils::BranchToString(this->mBranch) << std::endl;
         std::cout << "-----------------------------------------" << std::endl;
-    
+
 }
-#endif
+
+void XyzInternEmployee::PrintSummaryRow() const
+{
+    XyzEmployeeSummaryBuilder()
+        .setName(this->mName)
+        .setId(this->mEmployeeId)
+        .setType("Intern")
+        .setStatus(EmployeeUtils::EmployeeStatusToString(this->mEmployeeStatus))
+        .setGender(this->mGender)
+        .setDOB(this->mDateOfBirth)
+        .setDOJ(this->mDateOfJoining)
+        .setDOL(this->mDateOfLeaving)
+        .setCollege(EmployeeUtils::CollegeToString(this->mCollege))
+        .setBranch(EmployeeUtils::BranchToString(this->mBranch))
+        .printRow((this->mEmployeeStatus?0:1));
+}
